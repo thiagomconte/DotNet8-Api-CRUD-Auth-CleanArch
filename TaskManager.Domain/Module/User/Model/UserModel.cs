@@ -2,13 +2,30 @@
 
 namespace TaskManager.Domain.Module.User.Model
 {
-    public class UserModel(int id, string name, string email, string password, UserRole role, List<TaskModel>? tasks)
+    public class UserModel
     {
-        public int Id { get; set; } = id;
-        public string Name { get; set; } = name;
-        public string Email { get; set; } = email;
-        public string Password { get; set; } = password;
-        public UserRole role { get; set; } = role;
-        public List<TaskModel> Tasks { get; set; } = tasks ?? [];
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public UserRole Role { get; set; }
+        public List<TaskModel> Tasks { get; set; } = [];
+
+        public UserModel(string name, string email, string password)
+        {
+            Name = name;
+            Email = email;
+            Password = password;
+        }
+
+        public UserModel(int id, string name, string email, string password, UserRole role, List<TaskModel>? tasks)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            Password = password;
+            Role = role;
+            Tasks = tasks ?? [];
+        }
     }
 }

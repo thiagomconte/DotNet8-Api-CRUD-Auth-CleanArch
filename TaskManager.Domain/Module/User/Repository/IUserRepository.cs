@@ -11,7 +11,7 @@ namespace TaskManager.Domain.Module.User.Repository
     {
         public Task<UserModel> AddUserAsync(UserModel user);
         public Task<List<UserModel>> GetUsersAsync();
-        public Task<List<UserModel>> GetUserByIdAsync(int id);
-        public Task<List<UserModel>> GetUserByEmailAsync(string email);
+        public Task<UserModel> GetUserByIdAsync(int id);
+        public Task<UserModel> GetUserByEmailAsync(string email);
     }
 }

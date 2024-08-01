@@ -2,6 +2,7 @@
 using TaskManager.Data.Module.User.Entity;
 using TaskManager.Data.Module.User.Mapper;
 using TaskManager.Domain.Module.Task.Model;
+using TaskManager.Domain.Module.User.Model;
 
 namespace TaskManager.Data.Module.Task.Mapper
 {
@@ -16,6 +17,17 @@ namespace TaskManager.Data.Module.Task.Mapper
         public static List<TaskEntity> ToEntity(List<TaskModel> models)
         {
             return models.Select(ToEntity).ToList();
+        }
+
+        public static TaskModel ToDomain(TaskEntity entity)
+        {
+            UserModel? user = entity.User != null ? UserMapper.ToDomain(entity.User) : null;
+            return new TaskModel(entity.Id, entity.Title, entity.Description, entity.Status, entity.CreatedAt, entity.UserId, user);
+        }
+
+        public static List<TaskModel> ToDomain(List<TaskEntity> entities)
+        {
+            return entities.Select(ToDomain).ToList();
         }
     }
 }
