@@ -14,8 +14,13 @@ namespace TaskManager.Dto.User
 
         public static UserResponse ToUserResponse(UserModel model)
         {
-            var tasks = TaskDtoMapper.ToResponse(model.Tasks);
+            var tasks = model.Tasks != null ? TaskDtoMapper.ToResponse(model.Tasks) : [];
             return new UserResponse(model.Id, model.Name, model.Email, model.Role.ToString(), tasks);
+        }
+
+        public static List<UserResponse> ToUserResponse(List<UserModel> models)
+        {
+            return models.Select(ToUserResponse).ToList();
         }
     }
 }

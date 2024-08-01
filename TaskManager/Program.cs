@@ -23,36 +23,7 @@ builder.Services.AddDbContext<TaskManagerDbContext>(options => options.UseSqlSer
 
 DependencyContainer.RegisterServices(builder.Services);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()!;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings.Issuer,
-            ValidAudience = jwtSettings.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
-            ClockSkew = TimeSpan.Zero
-        };
-        options.Events = new JwtBearerEvents()
-        {
-            OnAuthenticationFailed = context =>
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                context.Response.ContentType = "application/json";
-                return context.Response.WriteAsJsonAsync(new DefaultResponse<Unit>("Invalid auth token"));
-            },
-            OnChallenge = context =>
-            {
-                context.HandleResponse();
-                return Task.CompletedTask;
-            }
-        };
-    });
+JswtService.RegisterService(builder.Services, builder.Configuration);
 
 builder.Services.AddSwaggerGen(c =>
 {

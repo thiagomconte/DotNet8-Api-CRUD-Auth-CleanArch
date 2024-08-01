@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Auth.Jwt;
 using TaskManager.Domain.Module.User.Usecase;
@@ -10,29 +11,32 @@ using TaskManager.Dto.User.Response;
 namespace TaskManager.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("users")]
     public class UserController : ControllerBase
     {
 
         private readonly ILogger<UserController> _logger;
         private readonly AddUserUsecase _addUserUsecase;
         private readonly GetUserByCredentialsUsecase _getUserByCredentialsUsecase;
+        private readonly GetAllUsersUsecase _getAllUsersUsecase;
         private readonly TokenUtils _tokenUtils;
 
-        public UserController(ILogger<UserController> logger, AddUserUsecase addUserUsecase, GetUserByCredentialsUsecase getUserByCredentialsUsecase, TokenUtils tokenUtils)
+        public UserController(ILogger<UserController> logger, AddUserUsecase addUserUsecase, GetUserByCredentialsUsecase getUserByCredentialsUsecase, TokenUtils tokenUtils, GetAllUsersUsecase getAllUsersUsecase)
         {
             _logger = logger;
             _addUserUsecase = addUserUsecase;
             _getUserByCredentialsUsecase = getUserByCredentialsUsecase;
             _tokenUtils = tokenUtils;
+            _getAllUsersUsecase = getAllUsersUsecase;
         }
 
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpRequest request)
         {
-            var createdUser = await _addUserUsecase.Invoke(UserDtoMapper.ToDomain(request));
+            var userModel = UserDtoMapper.ToDomain(request);
+            var createdUser = await _addUserUsecase.Invoke(userModel);
             var response = UserDtoMapper.ToUserResponse(createdUser);
-            return Ok(new DefaultResponse<UserResponse>("Cadastro realizado com sucesso"));
+            return Ok(new DefaultResponse<UserResponse>(response, "Cadastro realizado com sucesso"));
         }
 
         [HttpPost("signin")]
@@ -43,6 +47,15 @@ namespace TaskManager.Controllers
             var token = _tokenUtils.GenerateToken(userResponse);
             var authResponse = new AuthResponse(userResponse, token);
             return Ok(new DefaultResponse<AuthResponse>(authResponse, "Login realizado com sucesso"));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _getAllUsersUsecase.Invoke();
+            var response = UserDtoMapper.ToUserResponse(users);
+            return Ok(new DefaultResponse<List<UserResponse>>(response));
         }
     }
 }

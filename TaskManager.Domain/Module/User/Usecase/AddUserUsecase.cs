@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Domain.Module.User.Model;
+﻿using TaskManager.Domain.Module.User.Model;
 using TaskManager.Domain.Module.User.Repository;
 
 namespace TaskManager.Domain.Module.User.Usecase
@@ -19,7 +14,8 @@ namespace TaskManager.Domain.Module.User.Usecase
 
         public async Task<UserModel> Invoke(UserModel user)
         {
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = hashedPassword;
             return await _userRepository.AddUserAsync(user);
         }
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Core.Module.Exceptions;
+﻿using TaskManager.Core.Module.Exceptions;
 using TaskManager.Domain.Module.User.Model;
 using TaskManager.Domain.Module.User.Repository;
 

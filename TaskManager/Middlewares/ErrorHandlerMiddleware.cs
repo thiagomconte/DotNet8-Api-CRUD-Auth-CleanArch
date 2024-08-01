@@ -49,7 +49,10 @@ namespace TaskManager.Middlewares
                     return context.Response.WriteAsJsonAsync(new DefaultResponse<Unit>(exception.Message));
 
                 default:
+                    _logger.LogError("-------------------------------------------------------");
                     _logger.LogError(exception.Message);
+                    _logger.LogError(exception.StackTrace);
+                    _logger.LogError("-------------------------------------------------------");
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     return context.Response.WriteAsJsonAsync(new DefaultResponse<Unit>("An unexpected error occurred."));
             }

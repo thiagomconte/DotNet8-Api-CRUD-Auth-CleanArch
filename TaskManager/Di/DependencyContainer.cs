@@ -10,17 +10,18 @@ namespace TaskManager.Di
         public static void RegisterServices(IServiceCollection services)
         {
             // DataSource
-            services.AddSingleton<UserLocalDataSource>();
+            services.AddScoped<UserLocalDataSource>();
 
             // Repository
-            services.AddSingleton<IUserRepository, UserRepositoryImpl>();
+            services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
             // Usecase
-            services.AddSingleton<AddUserUsecase>();
-            services.AddSingleton<GetUserByCredentialsUsecase>();
+            services.AddScoped<AddUserUsecase>();
+            services.AddScoped<GetUserByCredentialsUsecase>();
+            services.AddScoped<GetAllUsersUsecase>();
 
             // Others
-            services.AddSingleton<TokenUtils>();
+            services.AddScoped<TokenUtils>();
         }
     }
 }

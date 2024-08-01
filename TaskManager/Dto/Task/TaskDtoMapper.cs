@@ -8,7 +8,7 @@ namespace TaskManager.Dto.Task
     {
         public static TaskResponse ToResponse(TaskModel model)
         {
-            var userResponse = model.User == null ? UserDtoMapper.ToUserResponse(model.User) : null;
+            var userResponse = model.User != null ? UserDtoMapper.ToUserResponse(model.User) : null;
             return new TaskResponse(model.Id, model.Title, model.Description, model.Status.ToString(), model.CreatedAt, userResponse);
         }
 

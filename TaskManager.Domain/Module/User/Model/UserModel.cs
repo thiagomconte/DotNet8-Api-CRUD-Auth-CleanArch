@@ -8,7 +8,7 @@ namespace TaskManager.Domain.Module.User.Model
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public UserRole Role { get; set; }
+        public UserRole Role { get; set; } = UserRole.EMPLOYEE;
         public List<TaskModel> Tasks { get; set; } = [];
 
         public UserModel(string name, string email, string password)
