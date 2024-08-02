@@ -1,95 +1,91 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentAssertions;
 using TaskManager.Core.Module.Exceptions;
-using TaskManager.Data.Module.Database;
 using TaskManager.Data.Module.User.Repository;
 using TaskManager.Data.Module.UserTask.Repository;
 using TaskManager.Data.Test.User;
+using Xunit;
 
 namespace TaskManager.Integration.Tests.Data.UserTask.Repository
 {
-    [TestClass]
-    public class TaskLocalDataSourceTest : BaseLocalDataSourceTest
+    public class TaskLocalDataSourceTest : BaseLocalDataSourceTest, IAsyncLifetime
     {
 
         private TaskLocalDataSource _taskLocalDataSource;
         private UserLocalDataSource _userLocalDataSource;
 
-        [TestInitialize]
-        public void Setup()
+        public TaskLocalDataSourceTest()
         {
             SetupDb();
             _taskLocalDataSource = new TaskLocalDataSource(_context);
             _userLocalDataSource = new UserLocalDataSource(_context);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        public async Task InitializeAsync()
+        {
+            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task1);
+            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task2);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task DisposeAsync()
         {
             _context.Database.EnsureDeleted();
             _context.Dispose();
+            return Task.CompletedTask;
         }
 
-        [TestMethod]
+
+        [Fact]
         public async Task GetAllAsync_ReturnsAllTasks()
         {
-            // Arrange
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task1);
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task2);
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task3);
-
             // Act
             var result = await _taskLocalDataSource.GetAllAsync();
 
             // Assert
-            Assert.AreEqual(3, result.Count);
+            result.Count.Should().Be(2);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetByIdAsync_ReturnsTask()
         {
-            // Arrange
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task1);
-
             // Act
             var result = await _taskLocalDataSource.GetByIdAsync(1);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetByIdAsync_ThrowsException_WhenTaskNotFound()
         {
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () =>
-                await _taskLocalDataSource.GetByIdAsync(78));
+            // Act
+            Func<Task> act = async () => await _taskLocalDataSource.GetByIdAsync(78);
+
+            // Assert
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddTaskAsync_AddsTaskToDatabase()
         {
             // Act
-            var result = await _taskLocalDataSource.AddTaskAsync(TaskMock.Task2);
+            var result = await _taskLocalDataSource.AddTaskAsync(TaskMock.Task3);
 
             // Assert
-            Assert.AreEqual(TaskMock.Task2.Id, result.Id);
-            Assert.AreEqual(TaskMock.Task2.Title, result.Title);
+            result.Id.Should().Be(TaskMock.Task3.Id);
+            result.Title.Should().Be(TaskMock.Task3.Title);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AssignUserAsync_AssignsUserToTask()
         {
-            // Arrange
-            await _userLocalDataSource.AddUserAsync(UserMock.User1);
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task1);
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task2);
 
             // Act
             var result = await _taskLocalDataSource.AssignUserAsync(UserMock.User1.Id, TaskMock.Task2.Id);
 
             // Assert
-            Assert.AreEqual(UserMock.User1.Id, result.UserId);
+            result.UserId.Should().Be(UserMock.User1.Id);
         }
     }
 }

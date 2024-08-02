@@ -6,26 +6,26 @@ using TaskManager.Domain.Module.User.Model;
 
 namespace TaskManager.Data.Module.Task.Mapper
 {
-    public class TaskMapper
+    public static class TaskMapper
     {
-        public static TaskEntity ToEntity(TaskModel model)
+        public static TaskEntity ToEntity(this TaskModel model)
         {
-            UserEntity? user = model.User != null ? UserMapper.ToEntity(model.User) : null;
+            UserEntity? user = model.User != null ? model.User.ToEntity() : null;
             return new TaskEntity(model.Id, model.Title, model.Description, model.Status, model.CreatedAt, model.UserId, user);
         }
 
-        public static List<TaskEntity> ToEntity(List<TaskModel> models)
+        public static List<TaskEntity> ToEntity(this List<TaskModel> models)
         {
             return models.Select(ToEntity).ToList();
         }
 
-        public static TaskModel ToDomain(TaskEntity entity)
+        public static TaskModel ToDomain(this TaskEntity entity)
         {
-            UserModel? user = entity.User != null ? UserMapper.ToDomain(entity.User) : null;
+            UserModel? user = entity.User != null ? entity.User.ToDomain() : null;
             return new TaskModel(entity.Id, entity.Title, entity.Description, entity.Status, entity.CreatedAt, entity.UserId, user);
         }
 
-        public static List<TaskModel> ToDomain(List<TaskEntity> entities)
+        public static List<TaskModel> ToDomain(this List<TaskEntity> entities)
         {
             return entities.Select(ToDomain).ToList();
         }

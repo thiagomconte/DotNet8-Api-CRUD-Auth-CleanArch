@@ -17,26 +17,25 @@ public class TaskRepositoryImpl : ITaskRepository
 
     public async Task<TaskModel> AddAsync(TaskModel task)
     {
-        var taskEntity = TaskMapper.ToEntity(task);
-        var insertedTask = await _taskLocalDataSource.AddTaskAsync(taskEntity);
-        return TaskMapper.ToDomain(insertedTask);
+        var insertedTask = await _taskLocalDataSource.AddTaskAsync(task.ToEntity());
+        return insertedTask.ToDomain();
     }
 
     public async Task<TaskModel> AssignUserAsync(int userId, int taskId)
     {
         var updatedTask = await _taskLocalDataSource.AssignUserAsync(userId, taskId);
-        return TaskMapper.ToDomain(updatedTask);
+        return updatedTask.ToDomain();
     }
 
     public async Task<List<TaskModel>> GetAllAsync()
     {
         var tasks = await _taskLocalDataSource.GetAllAsync();
-        return TaskMapper.ToDomain(tasks);
+        return tasks.ToDomain();
     }
 
     public async Task<TaskModel> GetByIdAsync(int id)
     {
         var task = await _taskLocalDataSource.GetByIdAsync(id);
-        return TaskMapper.ToDomain(task);
+        return task.ToDomain();
     }
 }

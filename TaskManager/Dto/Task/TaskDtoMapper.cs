@@ -5,20 +5,20 @@ using TaskManager.Dto.User;
 
 namespace TaskManager.Dto.Task
 {
-    public class TaskDtoMapper
+    public static class TaskDtoMapper
     {
-        public static TaskResponse ToResponse(TaskModel model)
+        public static TaskResponse ToResponse(this TaskModel model)
         {
-            var userResponse = model.User != null ? UserDtoMapper.ToUserResponse(model.User) : null;
+            var userResponse = model.User != null ? model.User.ToUserResponse() : null;
             return new TaskResponse(model.Id, model.Title, model.Description, model.Status.ToString(), model.CreatedAt, userResponse);
         }
 
-        public static List<TaskResponse> ToResponse(List<TaskModel> models)
+        public static List<TaskResponse> ToResponse(this List<TaskModel> models)
         {
             return models.Select(ToResponse).ToList();
         }
 
-        public static TaskModel ToDomain(CreateTaskRequest request)
+        public static TaskModel ToDomain(this CreateTaskRequest request)
         {
             return new TaskModel(request.Title, request.Description, request.Status, request.UserId);
         }

@@ -31,8 +31,7 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> GetAllTasks()
     {
         var tasks = await _getAllTasksUsecase.Invoke();
-        var response = TaskDtoMapper.ToResponse(tasks);
-        return Ok(new DefaultResponse<List<TaskResponse>>(response));
+        return Ok(new DefaultResponse<List<TaskResponse>>(tasks.ToResponse()));
     }
 
     [HttpPost]
@@ -49,8 +48,7 @@ public class TaskController : ControllerBase
     public async Task<IActionResult> GetTaskById(int id)
     {
         var task = await _getTaskByIdUsecase.Invoke(id);
-        var response = TaskDtoMapper.ToResponse(task);
-        return Ok(new DefaultResponse<TaskResponse>(response));
+        return Ok(new DefaultResponse<TaskResponse>(task.ToResponse()));
     }
 
     [HttpPatch]

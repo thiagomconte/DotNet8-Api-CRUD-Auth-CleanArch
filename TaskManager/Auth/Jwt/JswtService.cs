@@ -6,9 +6,9 @@ using TaskManager.Dto;
 
 namespace TaskManager.Auth.Jwt;
 
-public class JswtService
+public static class JswtService
 {
-    public static void RegisterService(IServiceCollection services, IConfiguration configuration)
+    public static void RegisterJwtService(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

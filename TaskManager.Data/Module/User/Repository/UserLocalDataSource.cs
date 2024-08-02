@@ -24,7 +24,7 @@
 
         public async Task<List<UserEntity>> GetUsersAsync()
         {
-            return await _dbContext.User.ToListAsync();
+            return await _dbContext.User.AsNoTracking().ToListAsync();
         }
 
         public async Task<UserEntity> GetUserByIdAsync(int id)

@@ -1,98 +1,101 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentAssertions;
 using TaskManager.Core.Module.Exceptions;
-using TaskManager.Data.Module.Database;
 using TaskManager.Data.Module.User.Repository;
 using TaskManager.Integration.Tests.Data;
+using Xunit;
 
 namespace TaskManager.Data.Test.User.Repository
 {
 
-    [TestClass]
-    public class UserLocalDataSourceTest: BaseLocalDataSourceTest
+    public class UserLocalDataSourceTest : BaseLocalDataSourceTest, IAsyncLifetime
     {
         private UserLocalDataSource _userLocalDataSource;
 
-        [TestInitialize]
-        public void Setup()
+        public UserLocalDataSourceTest()
         {
             SetupDb();
             _userLocalDataSource = new UserLocalDataSource(_context);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        public async Task InitializeAsync()
+        {
+            await _userLocalDataSource.AddUserAsync(UserMock.User1);
+            await _userLocalDataSource.AddUserAsync(UserMock.User2);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task DisposeAsync()
         {
             _context.Database.EnsureDeleted();
             _context.Dispose();
+            return Task.CompletedTask;
         }
 
-        [TestMethod]
+        [Fact]
         public async Task AddUserAsync_AddsUserToDatabase()
         {
             // Act
-            var result = await _userLocalDataSource.AddUserAsync(UserMock.User1);
+            var result = await _userLocalDataSource.AddUserAsync(UserMock.User3);
 
             // Assert
-            Assert.AreEqual(1, result.Id);
+            result.Id.Should().Be(3);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetAllAsync_ReturnsAllUsers()
         {
-            // Arrange
-            await _userLocalDataSource.AddUserAsync(UserMock.User1);
-            await _userLocalDataSource.AddUserAsync(UserMock.User2);
-            await _userLocalDataSource.AddUserAsync(UserMock.User3);
 
             // Act
             var result = await _userLocalDataSource.GetUsersAsync();
 
             // Assert
-            Assert.AreEqual(3, result.Count);
+            result.Count.Should().Be(2);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetUserByIdAsync_ReturnsUser()
         {
-            // Arrange
-            await _userLocalDataSource.AddUserAsync(UserMock.User1);
-
             // Act
             var result = await _userLocalDataSource.GetUserByIdAsync(1);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetUserByEmailAsync_ReturnsUser()
         {
-            // Arrange
-            await _userLocalDataSource.AddUserAsync(UserMock.User1);
 
+            // Arrange
+            await _userLocalDataSource.AddUserAsync(UserMock.User4);
             // Act
-            var result = await _userLocalDataSource.GetUserByEmailAsync(UserMock.User1.Email);
+            var result = await _userLocalDataSource.GetUserByEmailAsync(UserMock.User4.Email);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
+            result.Should().NotBeNull();
+            result.Id.Should().Be(UserMock.User4.Id);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetUserByIdAsync_ThrowsException_WhenUserNotFound()
         {
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () =>
-                await _userLocalDataSource.GetUserByIdAsync(99));
+
+            // Act
+            Func<Task> act = async () => await _userLocalDataSource.GetUserByIdAsync(99);
+
+            // Assert
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetUserByEmailAsync_ThrowsException_WhenUserNotFound()
         {
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () =>
-                await _userLocalDataSource.GetUserByEmailAsync("nonexistent@example.com"));
+            // Act
+            Func<Task> act = async () => await _userLocalDataSource.GetUserByEmailAsync("nonexistent@example.com");
+
+            // Assert
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
     }
 }

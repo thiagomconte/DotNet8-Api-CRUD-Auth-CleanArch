@@ -16,7 +16,7 @@ public class TaskLocalDataSource
 
     public async Task<List<TaskEntity>> GetAllAsync()
     {
-        return await _dbContext.Task.Include(task => task.User).ToListAsync();
+        return await _dbContext.Task.Include(task => task.User).AsNoTracking().ToListAsync();
     }
 
     public async Task<TaskEntity> GetByIdAsync(int id)

@@ -15,27 +15,26 @@ namespace TaskManager.Data.Module.User.Repository
 
         public async Task<UserModel> AddUserAsync(UserModel user)
         {
-            var userEntity = UserMapper.ToEntity(user);
-            var insertedUser = await _dataSource.AddUserAsync(userEntity);
-            return UserMapper.ToDomain(insertedUser);
+            var insertedUser = await _dataSource.AddUserAsync(user.ToEntity());
+            return insertedUser.ToDomain();
         }
 
         public async Task<UserModel> GetUserByEmailAsync(string email)
         {
             var user = await _dataSource.GetUserByEmailAsync(email);
-            return UserMapper.ToDomain(user);
+            return user.ToDomain();
         }
 
         public async Task<UserModel> GetUserByIdAsync(int id)
         {
             var user = await _dataSource.GetUserByIdAsync(id);
-            return UserMapper.ToDomain(user);
+            return user.ToDomain();
         }
 
         public async Task<List<UserModel>> GetUsersAsync()
         {
             var users = await _dataSource.GetUsersAsync();
-            return UserMapper.ToDomain(users);
+            return users.ToDomain();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Data.Module.Database;
+using Xunit;
 
 namespace TaskManager.Integration.Tests.Data
 {
@@ -7,13 +8,13 @@ namespace TaskManager.Integration.Tests.Data
     {
 
         protected DbContextOptions<TaskManagerDbContext> _options;
-        protected TaskManagerDbContext _context;
+        public TaskManagerDbContext _context;
 
         protected void SetupDb()
         {
 
             _options = new DbContextOptionsBuilder<TaskManagerDbContext>()
-                        .UseInMemoryDatabase(databaseName: "TaskManagerTestDb")
+                        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                         .Options;
 
             _context = new TaskManagerDbContext(_options);

@@ -1,16 +1,12 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using TaskManager.Auth.Jwt;
-using TaskManager.Core.Module.Utils;
 using TaskManager.Data.Module.Database;
 using TaskManager.Di;
-using TaskManager.Dto;
 using TaskManager.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+const string CorsPolicy = "CorsPolicy";
 
 // Add services to the container.
 
@@ -21,9 +17,18 @@ builder.Services.AddEndpointsApiExplorer();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TaskManagerDbContext>(options => options.UseSqlServer(connectionString));
 
-DependencyContainer.RegisterServices(builder.Services);
+builder.Services.RegisterServices();
 
-JswtService.RegisterService(builder.Services, builder.Configuration);
+builder.Services.RegisterJwtService(builder.Configuration);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CorsPolicy, policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+}
+);
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -67,6 +72,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 //app.UseHttpsRedirection();
+
+app.UseCors(CorsPolicy);
 
 app.UseAuthorization();
 

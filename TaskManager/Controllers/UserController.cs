@@ -31,17 +31,15 @@ namespace TaskManager.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(SignUpRequest request)
         {
-            var userModel = UserDtoMapper.ToDomain(request);
-            var createdUser = await _addUserUsecase.Invoke(userModel);
-            var response = UserDtoMapper.ToUserResponse(createdUser);
-            return Ok(new DefaultResponse<UserResponse>(response, "Cadastro realizado com sucesso"));
+            var createdUser = await _addUserUsecase.Invoke(request.ToDomain());
+            return Ok(new DefaultResponse<UserResponse>(createdUser.ToUserResponse(), "Cadastro realizado com sucesso"));
         }
 
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(SignInRequest request)
         {
             var existingUser = await _getUserByCredentialsUsecase.Invoke(request.Email, request.Password);
-            var userResponse = UserDtoMapper.ToUserResponse(existingUser);
+            var userResponse = existingUser.ToUserResponse();
             var token = _tokenUtils.GenerateToken(userResponse);
             var authResponse = new AuthResponse(userResponse, token);
             return Ok(new DefaultResponse<AuthResponse>(authResponse, "Login realizado com sucesso"));
@@ -52,8 +50,7 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _getAllUsersUsecase.Invoke();
-            var response = UserDtoMapper.ToUserResponse(users);
-            return Ok(new DefaultResponse<List<UserResponse>>(response));
+            return Ok(new DefaultResponse<List<UserResponse>>(users.ToUserResponse()));
         }
     }
 }

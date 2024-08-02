@@ -9,9 +9,9 @@ using TaskManager.Domain.Module.User.Usecase;
 
 namespace TaskManager.Di
 {
-    public class DependencyContainer
+    public static class DependencyContainer
     {
-        public static void RegisterServices(IServiceCollection services)
+        public static void RegisterServices(this IServiceCollection services)
         {
             // DataSource
             services.AddScoped<UserLocalDataSource>();

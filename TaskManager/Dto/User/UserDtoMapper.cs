@@ -5,19 +5,19 @@ using TaskManager.Dto.User.Response;
 
 namespace TaskManager.Dto.User
 {
-    public class UserDtoMapper
+    public static class UserDtoMapper
     {
-        public static UserModel ToDomain(SignUpRequest request)
+        public static UserModel ToDomain(this SignUpRequest request)
         {
             return new UserModel(request.Name, request.Email, request.Password);
         }
 
-        public static UserResponse ToUserResponse(UserModel model)
+        public static UserResponse ToUserResponse(this UserModel model)
         {
             return new UserResponse(model.Id, model.Name, model.Email, model.Role.ToString());
         }
 
-        public static List<UserResponse> ToUserResponse(List<UserModel> models)
+        public static List<UserResponse> ToUserResponse(this List<UserModel> models)
         {
             return models.Select(ToUserResponse).ToList();
         }
