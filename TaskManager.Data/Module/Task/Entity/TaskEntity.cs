@@ -21,6 +21,8 @@ namespace TaskManager.Data.Module.Task.Entity
         public int? UserId { get; set; }
         public UserEntity? User { get; set; }
 
+        public TaskEntity() { }
+
         public TaskEntity(string title, string description)
         {
             Title = title;

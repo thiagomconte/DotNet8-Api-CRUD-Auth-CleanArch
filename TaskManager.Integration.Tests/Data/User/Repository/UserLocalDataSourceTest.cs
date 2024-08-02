@@ -2,27 +2,20 @@
 using TaskManager.Core.Module.Exceptions;
 using TaskManager.Data.Module.Database;
 using TaskManager.Data.Module.User.Repository;
+using TaskManager.Integration.Tests.Data;
 
 namespace TaskManager.Data.Test.User.Repository
 {
 
     [TestClass]
-    public class UserLocalDataSourceTest
+    public class UserLocalDataSourceTest: BaseLocalDataSourceTest
     {
-
-        private DbContextOptions<TaskManagerDbContext> _options;
-        private TaskManagerDbContext _context;
         private UserLocalDataSource _userLocalDataSource;
 
         [TestInitialize]
         public void Setup()
         {
-            // Configura o banco de dados em memória
-            _options = new DbContextOptionsBuilder<TaskManagerDbContext>()
-                        .UseInMemoryDatabase(databaseName: "TaskManagerTestDb")
-                        .Options;
-
-            _context = new TaskManagerDbContext(_options);
+            SetupDb();
             _userLocalDataSource = new UserLocalDataSource(_context);
         }
 
