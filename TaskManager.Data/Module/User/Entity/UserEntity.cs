@@ -28,14 +28,13 @@ namespace TaskManager.Data.Module.User.Entity
             Password = password;
         }
 
-        public UserEntity(int id, string name, string email, string password, UserRole role, ICollection<TaskEntity> tasks)
+        public UserEntity(int id, string name, string email, string password, UserRole role)
         {
             Id = id;
             Name = name;
             Email = email;
             Password = password;
             Role = role;
-            Tasks = tasks;
         }
     }
 }

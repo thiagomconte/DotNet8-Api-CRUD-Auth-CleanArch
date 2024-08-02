@@ -1,4 +1,5 @@
 ﻿using TaskManager.Domain.Module.Task.Model;
+using TaskManager.Dto.Task.Request;
 using TaskManager.Dto.Task.Response;
 using TaskManager.Dto.User;
 
@@ -15,6 +16,11 @@ namespace TaskManager.Dto.Task
         public static List<TaskResponse> ToResponse(List<TaskModel> models)
         {
             return models.Select(ToResponse).ToList();
+        }
+
+        public static TaskModel ToDomain(CreateTaskRequest request)
+        {
+            return new TaskModel(request.Title, request.Description, request.Status, request.UserId);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TaskManager.Data.Module.Task.Mapper
         public static TaskEntity ToEntity(TaskModel model)
         {
             UserEntity? user = model.User != null ? UserMapper.ToEntity(model.User) : null;
-            return new TaskEntity(model.Id, model.Title, model.Title, model.Status, model.CreatedAt, model.UserId, user);
+            return new TaskEntity(model.Id, model.Title, model.Description, model.Status, model.CreatedAt, model.UserId, user);
         }
 
         public static List<TaskEntity> ToEntity(List<TaskModel> models)

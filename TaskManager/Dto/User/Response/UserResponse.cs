@@ -8,15 +8,13 @@ namespace TaskManager.Dto.User.Response
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
-        public List<TaskResponse> Tasks { get; set; } = [];
 
-        public UserResponse(int id, string name, string email, string role, List<TaskResponse> tasks)
+        public UserResponse(int id, string name, string email, string role)
         {
             Id = id;
             Name = name;
             Email = email;
             Role = role;
-            Tasks = tasks;
         }
     }
 }

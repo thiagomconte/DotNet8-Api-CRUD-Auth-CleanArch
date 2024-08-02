@@ -15,15 +15,13 @@ namespace TaskManager.Controllers
     public class UserController : ControllerBase
     {
 
-        private readonly ILogger<UserController> _logger;
         private readonly AddUserUsecase _addUserUsecase;
         private readonly GetUserByCredentialsUsecase _getUserByCredentialsUsecase;
         private readonly GetAllUsersUsecase _getAllUsersUsecase;
         private readonly TokenUtils _tokenUtils;
 
-        public UserController(ILogger<UserController> logger, AddUserUsecase addUserUsecase, GetUserByCredentialsUsecase getUserByCredentialsUsecase, TokenUtils tokenUtils, GetAllUsersUsecase getAllUsersUsecase)
+        public UserController(AddUserUsecase addUserUsecase, GetUserByCredentialsUsecase getUserByCredentialsUsecase, TokenUtils tokenUtils, GetAllUsersUsecase getAllUsersUsecase)
         {
-            _logger = logger;
             _addUserUsecase = addUserUsecase;
             _getUserByCredentialsUsecase = getUserByCredentialsUsecase;
             _tokenUtils = tokenUtils;

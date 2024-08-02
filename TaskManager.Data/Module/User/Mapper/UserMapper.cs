@@ -8,8 +8,7 @@ namespace TaskManager.Data.Module.User.Mapper
     {
         public static UserEntity ToEntity(UserModel model)
         {
-            var tasks = TaskMapper.ToEntity(model.Tasks);
-            return new UserEntity(model.Id, model.Name, model.Email, model.Password, model.Role, tasks);
+            return new UserEntity(model.Id, model.Name, model.Email, model.Password, model.Role);
         }
 
         public static List<UserEntity> ToEntity(List<UserModel> models)
@@ -19,8 +18,7 @@ namespace TaskManager.Data.Module.User.Mapper
 
         public static UserModel ToDomain(UserEntity entity)
         {
-            var tasks = TaskMapper.ToDomain([.. entity.Tasks]);
-            return new UserModel(entity.Id, entity.Name, entity.Email, entity.Password, entity.Role, tasks);
+            return new UserModel(entity.Id, entity.Name, entity.Email, entity.Password, entity.Role);
         }
 
         public static List<UserModel> ToDomain(List<UserEntity> entities)

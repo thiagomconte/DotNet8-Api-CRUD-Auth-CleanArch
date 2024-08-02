@@ -8,8 +8,7 @@ namespace TaskManager.Domain.Module.User.Model
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public UserRole Role { get; set; } = UserRole.EMPLOYEE;
-        public List<TaskModel> Tasks { get; set; } = [];
+        public UserRole Role { get; set; } = UserRole.ADMIN;
 
         public UserModel(string name, string email, string password)
         {
@@ -18,14 +17,13 @@ namespace TaskManager.Domain.Module.User.Model
             Password = password;
         }
 
-        public UserModel(int id, string name, string email, string password, UserRole role, List<TaskModel>? tasks)
+        public UserModel(int id, string name, string email, string password, UserRole role)
         {
             Id = id;
             Name = name;
             Email = email;
             Password = password;
             Role = role;
-            Tasks = tasks ?? [];
         }
     }
 }

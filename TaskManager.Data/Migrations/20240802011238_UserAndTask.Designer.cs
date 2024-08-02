@@ -12,8 +12,8 @@ using TaskManager.Data.Module.Database;
 namespace TaskManager.Data.Migrations
 {
     [DbContext(typeof(TaskManagerDbContext))]
-    [Migration("20240801211642_CreateUserAndTask")]
-    partial class CreateUserAndTask
+    [Migration("20240802011238_UserAndTask")]
+    partial class UserAndTask
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,8 +46,8 @@ namespace TaskManager.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");

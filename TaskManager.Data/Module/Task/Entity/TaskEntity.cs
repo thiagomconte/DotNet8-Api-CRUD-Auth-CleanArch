@@ -10,10 +10,10 @@ namespace TaskManager.Data.Module.Task.Entity
         public int Id { get; set; }
         [Required]
         [MinLength(3)]
-        [MaxLength(30)]
+        [MaxLength(60)]
         public string Title { get; set; }
         [MaxLength(250)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         [Required]
         public UserTaskStatus Status { get; set; } = UserTaskStatus.PENDING;
         [Required]
