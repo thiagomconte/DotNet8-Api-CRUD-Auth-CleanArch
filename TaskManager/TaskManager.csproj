@@ -20,4 +20,12 @@
     <ProjectReference Include="..\TaskManager.Data\TaskManager.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\thiag\Documents\projetos\dotnet\TaskManager\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\thiag\Documents\projetos\dotnet\TaskManager\.editorconfig" />
+  </ItemGroup>
+
 </Project>
