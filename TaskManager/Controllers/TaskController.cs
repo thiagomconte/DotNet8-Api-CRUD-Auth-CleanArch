@@ -55,7 +55,7 @@ public class TaskController : ControllerBase
     [Authorize(Roles = "ADMIN, EMPLOYEE")]
     public async Task<IActionResult> AssignTaskUser(AssignTaskRequest request)
     {
-        await _assignTaskUserUsecase.Invoke(request.UserId, request.TaskId);
-        return Ok(new DefaultResponse<Unit>("Tarefa atribuída ao usuário com sucesso"));
+        var task = await _assignTaskUserUsecase.Invoke(request.UserId, request.TaskId);
+        return Ok(new DefaultResponse<TaskResponse>(task.ToResponse(), "Tarefa atribuída ao usuário com sucesso"));
     }
 }

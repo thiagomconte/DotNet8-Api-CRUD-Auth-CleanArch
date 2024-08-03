@@ -3,9 +3,9 @@ using TaskManager.Core.Module.Exceptions;
 using TaskManager.Data.Module.Database;
 using TaskManager.Data.Module.Task.Entity;
 
-namespace TaskManager.Data.Module.UserTask.Repository;
+namespace TaskManager.Data.Module.Task.DataSource;
 
-public class TaskLocalDataSource
+public class TaskLocalDataSource : ITaskLocalDataSource
 {
     private readonly TaskManagerDbContext _dbContext;
 
@@ -36,6 +36,12 @@ public class TaskLocalDataSource
         var task = await _dbContext.Task.FindAsync(taskId) ?? throw new EntityNotFoundException("Tarefa não encontrada");
         task.UserId = userId;
         await _dbContext.SaveChangesAsync();
-        return task;
+        var updatedTask = await _dbContext.Task
+                                      .Include(t => t.User)
+                                      .AsNoTracking()
+                                      .FirstOrDefaultAsync(t => t.Id == taskId);
+
+        // Retorna a tarefa atualizada
+        return updatedTask ?? throw new EntityNotFoundException("Tarefa não encontrada após atualização");
     }
 }

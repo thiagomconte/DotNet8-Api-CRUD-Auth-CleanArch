@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-using TaskManager.Auth.Jwt;
+﻿using TaskManager.Auth.Jwt;
+using TaskManager.Data.Module.Task.DataSource;
 using TaskManager.Data.Module.Task.Mapper;
 using TaskManager.Data.Module.Task.Repository;
-using TaskManager.Data.Module.User.Entity;
+using TaskManager.Data.Module.User.DataSource;
 using TaskManager.Data.Module.User.Mapper;
 using TaskManager.Data.Module.User.Repository;
-using TaskManager.Data.Module.UserTask.Repository;
 using TaskManager.Domain.Module.Task.Repository;
 using TaskManager.Domain.Module.Task.Usecase;
-using TaskManager.Domain.Module.User.Model;
 using TaskManager.Domain.Module.User.Repository;
 using TaskManager.Domain.Module.User.Usecase;
 
@@ -20,7 +18,7 @@ namespace TaskManager.Di
         {
             // DataSource
             services.AddScoped<IUserLocalDataSource, UserLocalDataSource>();
-            services.AddScoped<TaskLocalDataSource>();
+            services.AddScoped<ITaskLocalDataSource, TaskLocalDataSource>();
 
             // Repository
             services.AddScoped<IUserRepository, UserRepositoryImpl>();

@@ -1,11 +1,13 @@
-﻿namespace TaskManager.Data.Module.User.Repository
+﻿using TaskManager.Data.Module.User.Repository;
+
+namespace TaskManager.Data.Module.User.DataSource
 {
     using Microsoft.EntityFrameworkCore;
     using TaskManager.Core.Module.Exceptions;
     using TaskManager.Data.Module.Database;
     using TaskManager.Data.Module.User.Entity;
 
-    public class UserLocalDataSource: IUserLocalDataSource
+    public class UserLocalDataSource : IUserLocalDataSource
     {
 
         private readonly TaskManagerDbContext _dbContext;

@@ -13,6 +13,8 @@ namespace TaskManager.Domain.Module.Task.Model
         public int? UserId { get; set; }
         public UserModel? User { get; set; }
 
+        public TaskModel() { }
+
         public TaskModel(int id, string title, string description, UserTaskStatus status, DateTime createdAt, int? userId, UserModel? user)
         {
             Id = id;

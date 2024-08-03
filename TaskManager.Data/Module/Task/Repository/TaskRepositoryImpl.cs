@@ -1,5 +1,6 @@
-using TaskManager.Data.Module.Task.Mapper;
-using TaskManager.Data.Module.UserTask.Repository;
+using AutoMapper;
+using TaskManager.Data.Module.Task.DataSource;
+using TaskManager.Data.Module.Task.Entity;
 using TaskManager.Domain.Module.Task.Model;
 using TaskManager.Domain.Module.Task.Repository;
 
@@ -8,34 +9,36 @@ namespace TaskManager.Data.Module.Task.Repository;
 public class TaskRepositoryImpl : ITaskRepository
 {
 
-    private readonly TaskLocalDataSource _taskLocalDataSource;
+    private readonly ITaskLocalDataSource _taskLocalDataSource;
+    private readonly IMapper _mapper;
 
-    public TaskRepositoryImpl(TaskLocalDataSource taskLocalDataSource)
+    public TaskRepositoryImpl(ITaskLocalDataSource taskLocalDataSource, IMapper mapper)
     {
         _taskLocalDataSource = taskLocalDataSource;
+        _mapper = mapper;
     }
 
     public async Task<TaskModel> AddAsync(TaskModel task)
     {
-        var insertedTask = await _taskLocalDataSource.AddTaskAsync(task.ToEntity());
-        return insertedTask.ToDomain();
+        var insertedTask = await _taskLocalDataSource.AddTaskAsync(_mapper.Map<TaskEntity>(task));
+        return _mapper.Map<TaskModel>(insertedTask);
     }
 
     public async Task<TaskModel> AssignUserAsync(int userId, int taskId)
     {
         var updatedTask = await _taskLocalDataSource.AssignUserAsync(userId, taskId);
-        return updatedTask.ToDomain();
+        return _mapper.Map<TaskModel>(updatedTask);
     }
 
     public async Task<List<TaskModel>> GetAllAsync()
     {
         var tasks = await _taskLocalDataSource.GetAllAsync();
-        return tasks.ToDomain();
+        return _mapper.Map<List<TaskModel>>(tasks);
     }
 
     public async Task<TaskModel> GetByIdAsync(int id)
     {
         var task = await _taskLocalDataSource.GetByIdAsync(id);
-        return task.ToDomain();
+        return _mapper.Map<TaskModel>(task);
     }
 }

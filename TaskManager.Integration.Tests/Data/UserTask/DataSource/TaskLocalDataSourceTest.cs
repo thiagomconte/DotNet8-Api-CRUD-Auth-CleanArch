@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using TaskManager.Core.Module.Exceptions;
-using TaskManager.Data.Module.User.Repository;
-using TaskManager.Data.Module.UserTask.Repository;
+using TaskManager.Data.Module.Task.DataSource;
+using TaskManager.Data.Module.User.DataSource;
 using TaskManager.Data.Test.User;
 using Xunit;
 
-namespace TaskManager.Integration.Tests.Data.UserTask.Repository
+namespace TaskManager.Integration.Tests.Data.UserTask.DataSource
 {
     public class TaskLocalDataSourceTest : BaseLocalDataSourceTest, IAsyncLifetime
     {
@@ -22,8 +22,8 @@ namespace TaskManager.Integration.Tests.Data.UserTask.Repository
 
         public async Task InitializeAsync()
         {
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task1);
-            await _taskLocalDataSource.AddTaskAsync(TaskMock.Task2);
+            await _taskLocalDataSource.AddTaskAsync(TaskMock.TaskEntity1);
+            await _taskLocalDataSource.AddTaskAsync(TaskMock.TaskEntity2);
             await _context.SaveChangesAsync();
         }
 
@@ -70,11 +70,11 @@ namespace TaskManager.Integration.Tests.Data.UserTask.Repository
         public async Task AddTaskAsync_AddsTaskToDatabase()
         {
             // Act
-            var result = await _taskLocalDataSource.AddTaskAsync(TaskMock.Task3);
+            var result = await _taskLocalDataSource.AddTaskAsync(TaskMock.TaskEntity3);
 
             // Assert
-            result.Id.Should().Be(TaskMock.Task3.Id);
-            result.Title.Should().Be(TaskMock.Task3.Title);
+            result.Id.Should().Be(TaskMock.TaskEntity3.Id);
+            result.Title.Should().Be(TaskMock.TaskEntity3.Title);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace TaskManager.Integration.Tests.Data.UserTask.Repository
         {
 
             // Act
-            var result = await _taskLocalDataSource.AssignUserAsync(UserMock.UserEntity1.Id, TaskMock.Task2.Id);
+            var result = await _taskLocalDataSource.AssignUserAsync(UserMock.UserEntity1.Id, TaskMock.TaskEntity2.Id);
 
             // Assert
             result.UserId.Should().Be(UserMock.UserEntity1.Id);

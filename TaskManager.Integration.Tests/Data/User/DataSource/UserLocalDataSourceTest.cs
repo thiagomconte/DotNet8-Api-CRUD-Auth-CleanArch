@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
 using TaskManager.Core.Module.Exceptions;
+using TaskManager.Data.Module.User.DataSource;
 using TaskManager.Data.Module.User.Repository;
-using TaskManager.Integration.Tests.Data;
+using TaskManager.Data.Test.User;
 using Xunit;
 
-namespace TaskManager.Data.Test.User.Repository
+namespace TaskManager.Integration.Tests.Data.User.DataSource
 {
 
     public class UserLocalDataSourceTest : BaseLocalDataSourceTest, IAsyncLifetime
