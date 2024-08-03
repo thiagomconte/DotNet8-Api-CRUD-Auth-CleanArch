@@ -1,9 +1,14 @@
-﻿using TaskManager.Auth.Jwt;
+﻿using AutoMapper;
+using TaskManager.Auth.Jwt;
+using TaskManager.Data.Module.Task.Mapper;
 using TaskManager.Data.Module.Task.Repository;
+using TaskManager.Data.Module.User.Entity;
+using TaskManager.Data.Module.User.Mapper;
 using TaskManager.Data.Module.User.Repository;
 using TaskManager.Data.Module.UserTask.Repository;
 using TaskManager.Domain.Module.Task.Repository;
 using TaskManager.Domain.Module.Task.Usecase;
+using TaskManager.Domain.Module.User.Model;
 using TaskManager.Domain.Module.User.Repository;
 using TaskManager.Domain.Module.User.Usecase;
 
@@ -14,7 +19,7 @@ namespace TaskManager.Di
         public static void RegisterServices(this IServiceCollection services)
         {
             // DataSource
-            services.AddScoped<UserLocalDataSource>();
+            services.AddScoped<IUserLocalDataSource, UserLocalDataSource>();
             services.AddScoped<TaskLocalDataSource>();
 
             // Repository
@@ -33,6 +38,7 @@ namespace TaskManager.Di
 
             // Others
             services.AddScoped<TokenUtils>();
+            services.AddAutoMapper(typeof(UserMappingProfile), typeof(TaskMappingProfile));
         }
     }
 }

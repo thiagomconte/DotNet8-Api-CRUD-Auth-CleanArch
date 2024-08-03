@@ -5,7 +5,7 @@
     using TaskManager.Data.Module.Database;
     using TaskManager.Data.Module.User.Entity;
 
-    public class UserLocalDataSource
+    public class UserLocalDataSource: IUserLocalDataSource
     {
 
         private readonly TaskManagerDbContext _dbContext;

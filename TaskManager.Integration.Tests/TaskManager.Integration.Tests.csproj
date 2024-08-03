@@ -29,6 +29,7 @@
     <ProjectReference Include="..\TaskManager.Core\TaskManager.Core.csproj" />
     <ProjectReference Include="..\TaskManager.Data\TaskManager.Data.csproj" />
     <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
+    <ProjectReference Include="..\TaskManager.Tests.Common\TaskManager.Tests.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

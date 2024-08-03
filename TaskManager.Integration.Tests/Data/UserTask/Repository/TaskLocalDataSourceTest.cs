@@ -82,10 +82,10 @@ namespace TaskManager.Integration.Tests.Data.UserTask.Repository
         {
 
             // Act
-            var result = await _taskLocalDataSource.AssignUserAsync(UserMock.User1.Id, TaskMock.Task2.Id);
+            var result = await _taskLocalDataSource.AssignUserAsync(UserMock.UserEntity1.Id, TaskMock.Task2.Id);
 
             // Assert
-            result.UserId.Should().Be(UserMock.User1.Id);
+            result.UserId.Should().Be(UserMock.UserEntity1.Id);
         }
     }
 }

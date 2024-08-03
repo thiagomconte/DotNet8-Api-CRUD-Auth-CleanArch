@@ -36,5 +36,11 @@ namespace TaskManager.Data.Module.User.Entity
             Password = password;
             Role = role;
         }
+
+        public UserEntity SetId(int id)
+        {
+            Id = id;
+            return this;
+        }
     }
 }

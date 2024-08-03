@@ -9,7 +9,7 @@ namespace TaskManager.Data.Test.User.Repository
 
     public class UserLocalDataSourceTest : BaseLocalDataSourceTest, IAsyncLifetime
     {
-        private UserLocalDataSource _userLocalDataSource;
+        private IUserLocalDataSource _userLocalDataSource;
 
         public UserLocalDataSourceTest()
         {
@@ -19,8 +19,8 @@ namespace TaskManager.Data.Test.User.Repository
 
         public async Task InitializeAsync()
         {
-            await _userLocalDataSource.AddUserAsync(UserMock.User1);
-            await _userLocalDataSource.AddUserAsync(UserMock.User2);
+            await _userLocalDataSource.AddUserAsync(UserMock.UserEntity1);
+            await _userLocalDataSource.AddUserAsync(UserMock.UserEntity2);
             await _context.SaveChangesAsync();
         }
 
@@ -35,7 +35,7 @@ namespace TaskManager.Data.Test.User.Repository
         public async Task AddUserAsync_AddsUserToDatabase()
         {
             // Act
-            var result = await _userLocalDataSource.AddUserAsync(UserMock.User3);
+            var result = await _userLocalDataSource.AddUserAsync(UserMock.UserEntity3);
 
             // Assert
             result.Id.Should().Be(3);
@@ -68,13 +68,13 @@ namespace TaskManager.Data.Test.User.Repository
         {
 
             // Arrange
-            await _userLocalDataSource.AddUserAsync(UserMock.User4);
+            await _userLocalDataSource.AddUserAsync(UserMock.UserEntity4);
             // Act
-            var result = await _userLocalDataSource.GetUserByEmailAsync(UserMock.User4.Email);
+            var result = await _userLocalDataSource.GetUserByEmailAsync(UserMock.UserEntity4.Email);
 
             // Assert
             result.Should().NotBeNull();
-            result.Id.Should().Be(UserMock.User4.Id);
+            result.Id.Should().Be(UserMock.UserEntity4.Id);
         }
 
         [Fact]

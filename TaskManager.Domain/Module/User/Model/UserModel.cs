@@ -1,6 +1,4 @@
-﻿using TaskManager.Domain.Module.Task.Model;
-
-namespace TaskManager.Domain.Module.User.Model
+﻿namespace TaskManager.Domain.Module.User.Model
 {
     public class UserModel
     {
@@ -8,7 +6,7 @@ namespace TaskManager.Domain.Module.User.Model
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public UserRole Role { get; set; } = UserRole.ADMIN;
+        public UserRole Role { get; set; } = UserRole.EMPLOYEE;
 
         public UserModel(string name, string email, string password)
         {
